@@ -6,6 +6,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const minifyJs = require('gulp-uglify');
 const sourceMaps = require('gulp-sourcemaps');
 const concat = require('gulp-concat');
+const criticalCss = require('gulp-critical-css');
 const { src, dest, watch } = require('gulp');
 
 const jsFiles1 = ['node_modules/jquery/dist/jquery.min.js', 'node_modules/bootstrap/dist/js/bootstrap.min.js', 'node_modules/swiper/swiper-bundle.min.js', 'assets/js/index.js'];
@@ -44,7 +45,13 @@ gulp.task('autoprefixer', () => {
 	gulp.src('assets/css/app.css').pipe(autoprefixer({
 		cascade: false
 	}))
-	.pipe(gulp.dest('assets/css'))
+	.pipe(gulp.dest('dist'))
+});
+
+gulp.task('criticalTask', () => {
+    gulp.src('assets/css/app.css')
+        .pipe(criticalCss())
+        .pipe(gulp.dest('assets/css'))
 });
 gulp.task('watch', () => {
     gulp.watch('assets/scss/**/*.scss', gulp.series('sass'))
